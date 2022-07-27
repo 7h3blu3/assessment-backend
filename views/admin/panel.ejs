@@ -1,0 +1,36 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+
+<h1 style="text-align:center">Admin panel</h1>
+<div class="container col-md-10">
+    <div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3 style="text-align:center">As an admin you have access to do all of the following:</h3>
+    <br>
+
+   
+    <br>1. Listing and editing user - You can make <b>anyone</b> an admin, content manager, reviewer or a user. You can change their type, level and mission but you can also delete a user.
+    <br>2. Creating scenarios - To create a scenario you will have to select <i>mission, level, type, passing grade, scenario time, title, description and scorecard.</i>
+    <br>3. Editing scenarios - You can edit all of the existing values of an existing scenario from the above requirements as well as archiving a scenario or permamently deleting it.
+    <br>
+    <br>
+    </div>
+    <!-- <h3>Add additional missions</h3>
+    <form class="col-sm-10" action="/admin/panel" method="POST">
+    <div class="row">  
+        <div class="col-sm-4">  <input class="form-control" list="datalistOptions" id="exampleDataList" name="mission" required placeholder="Mission">
+            <datalist id="datalistOptions">
+                <% filteredMissions.forEach(function(mission) { %>
+                    <option><%= mission %></option>
+                    <% }); %>
+            </datalist></div>
+            <div class="col-md">
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>"></form>
+        </div>
+    </div> -->
+</div>
+<%- include('../includes/end.ejs') %>

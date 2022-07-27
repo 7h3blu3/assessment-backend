@@ -1,0 +1,87 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<h1 id="inputs" class="text-center">Grade Assessment</h1>
+<div class="container col-md-8">
+
+    <form action="/admin/submission-grade" method="POST">
+        <div hidden><input readonly name="userId" type="hidden" class="form-control" value="<%= user._id%>" placeholder="<%= user._id%>"><%= user._id%></div>
+        <div hidden><input readonly name="scenario_title" type="hidden" class="form-control" value="<%= scenario.title%>" placeholder="<%= scenario.title%>"><%= scenario.title%></div>
+        <div hidden><input readonly name="scenario_mission" type="hidden"" class="form-control" value="<%= scenario.mission%>" placeholder="<%= scenario.mission%>"><%= scenario.mission%></div>
+        <div hidden><input readonly name="scenario_level" type="hidden" class="form-control" value="<%= scenario.level%>" placeholder="<%= scenario.level%>"><%= scenario.level%></div>
+        <div hidden><input readonly name="scenario_id" type="hidden" class="form-control" value="<%= scenario._id%>" placeholder="<%= scenario._id%>"><%= scenario._id%></div>
+        <div class="mb-3">
+            <textarea readonly class="form-control" id="exampleFormControlTextarea1" name="submission_grade_scenario_description" placeholder=""rows="10"><%= scenario.description %></textarea>
+        </div>
+        <div class="mb-3">
+            <textarea readonly class="form-control" id="exampleFormControlTextarea1" name="submission_grade_user_description" rows="12"><%= userInput %></textarea>
+        </div>
+        <h1 class="text-center">Score Card</h1>
+        
+        
+        <h3 class="text-center"><span>Passing Grade:<input readonly id="rndm2"  type="text" name="passing_grade" value="<%= scenario.passingGrade %>"/></span>  Current Grade:<input readonly id="rndm2" type="text" value="Passed"/></h3>
+        
+        <table class="table table-hover" name="test">
+    
+            <thead>
+                
+                <tr>
+                  <th scope="col">Question</th>
+                  <th scope="col">Weight/Points</th>
+                  <th scope="col">Dropdown</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <% for (var i = 0; i < scenario.scoreCard.length; i++) { %>
+                 
+                <tr>
+                    <td><%= scenario.scoreCard[i][0] %><input class="form-control" type="hidden" name="questions" value="<%= scenario.scoreCard[i][0] %>"></td>
+                    <td type="number"><%=scenario.scoreCard[i][1]%><input class="form-control" type="hidden" name="points" id="rndm" type="number" value="<%= scenario.scoreCard[i][1] %>"></td>
+                    <td>
+                        <select name="dropdown" class="form-select" aria-label="Default select example">
+                            <option value="1" selected>100%</option>
+                            <option value="0.75">75%</option>
+                            <option value="0.50">50%</option>
+                            <option value="0.25">25%</option>
+                            <option value="0">0%</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <!-- <td>Test has been submitted</td> -->
+                    
+                  </tr>
+                  <script>
+                
+                    for(i = 0; i<4;i++)
+                    {
+                        console.log($("#rndm").toArray())
+                    }
+                    //var arr = []
+                    //var val1 = [$("#rndm").val()];
+                    //arr.push(val1)
+                    //console.log(arr)
+                    //alert(val1)
+                    // console.log("hi")
+                    // let val2 = $("#inputs input:nth-child(2)").val();
+                    // $("#rndm2").val(val1 * val2).hide();
+                    
+                </script>
+                <% }; %>
+              </tbody>
+
+        </table>
+        <p class="text-center">Additional Comment</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="scenario_card_comment" placeholder="Write your comments here" rows="6"></textarea>
+        </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+
+<%- include('../includes/end.ejs') %>

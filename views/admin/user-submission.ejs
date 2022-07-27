@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+ 
+<div class="container col-md-8">
+    <table class="table table-hover">
+    
+        <thead>
+            
+          <% if (currentUser.userType === "Admin"){ %>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col"> Date Taken</th>
+              <th scope="col">Title of Scenario</th>
+              <th scope="col">Mission</th>
+              <th scope="col">Level</th>
+            </tr>
+            <% } else { %>
+              <tr>
+                <th scope="col">Date Taken</th>
+                <th scope="col">Title of Scenario</th>
+                <th scope="col">Mission</th>
+                <th scope="col">Level</th>
+                <th scope="col">Rate</th>
+              </tr>
+             <% } %>
+          </thead>
+          <tbody>
+
+            <% user.forEach(function (user) { %>
+              <% user.submittedScenarios.forEach(function (test) { %>
+                <% if (user.mission === currentUser.mission) { %>
+            <tr>
+                <td><%= test[3] %></td>
+                <td><%= test[2] %></td>
+                <td><%= user.mission %></td>
+                <td><%= user.level %></td>
+                <td><a href="/admin/submission-grade/<%= user.id %>/<%= test[0] %>" class="btn">Grade</a></td>
+            </tr>
+                <% } else if (currentUser.userType === "Admin"){ %>
+                  <tr>
+                    <td><%= user.email %></td>
+                    <td><%= test[3] %></td>
+                    <td><%= test[2] %></td>
+                    <td><%= user.mission %></td>
+                    <td><%= user.level %></td>
+                    
+                </tr>
+                  <% }; %>
+             <% }); %>
+            <% }); %>
+          </tbody>
+          
+    </table>
+</div>
+
+<%- include('../includes/end.ejs') %>

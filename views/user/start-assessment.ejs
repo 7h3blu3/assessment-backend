@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navbar.ejs') %>
+
+  <div class="jumbotron">
+  </div>
+  
+    <div class="container col-md-12 text-center">
+      <h1 style="text-align:center;  margin: 20px;">Welcome To The Assessment</h1>
+      <!-- The button has to be a post because it has to find the scenarios by id -->
+      <% if(user.testCounter <= 2) { %>
+        <button type="button" class="btn btn-primary btn-lg"><a style="color:rgb(255, 255, 255); text-decoration:none;"  href="/assessment">Start Assessment</a></button>
+      <% } else if (user.testCounter <= 3 && user.assignedType3.length >= 1){%>
+        <button type="button" style="background-color: #6600ff; border: 2px solid #6600ff;" class="btn btn-primary btn-lg"><a style="color:rgb(255, 255, 255); text-decoration:none;" href="/assessment"> Start Assessment</a></button>
+      <% } else {%>
+        <button type="button" disabled style="background-color: #cccccc;  border: 2px solid #cccccc;" class="btn btn-primary btn-lg"><a style="color:rgb(255, 255, 255); text-decoration:none;">Start Assessment</a></button>
+      <% } %>
+      <% if(user.assignedType3.length >= 1) { %>
+      <p>Assessments submitted: <%= user.testCounter-1 %> / 3</p>
+      <% } else if (user.assignedType3.length < 1){%>
+      <p>Assessments submitted: <%= user.testCounter-1 %> / 2</p>
+      <% } %>
+
+      <% if (user.finalGrade.length >= 1) { %>
+          
+      <div class="container col-md-12">
+        <table class="table table-hover" >
+            <thead>
+                <tr>
+                  <th scope="col">Title of Scenario</th>
+                  <th scope="col">Mission</th>
+                  <th scope="col">Level</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Passing Grade</th>
+                  <th scope="col">Score</th>
+                  <th scope="col">Feedback</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% user.finalGrade.forEach(function (element) { %>
+                <tr>
+                    <td><%= element[2] %></td>
+                    <td><%= user.mission %></td>
+                    <td><%= user.level %></td>
+                    <td><%= element[7] %></td>
+                    <td><%= element[5] %></td>
+                    <td><%= element[6] %></td>
+                    
+                    <td><%= element[8] %></td>
+                  </tr>
+                  <% }); %>
+              </tbody>
+            </table>
+    </div>
+    <% } %>
+      <%- include('../includes/end.ejs') %>
+    </div>

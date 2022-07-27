@@ -1,0 +1,68 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+
+<% if (scn.length > 0) { %>
+    
+    <div class="container col-md-8">
+         <h1  class="text-center">List Of All Scenarios</h1>
+        
+      <table class="table table-hover ">
+        
+        <thead>
+            
+            <tr>
+              <th scope="col">Details</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Mission</th>
+              <th scope="col">Level</th>
+              <th scope="col">Type</th>
+              <th scope="col">Time</th>
+              <th scope="col">Passing Grade</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Archive</th>
+              <th scope="col">Clone</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            
+            <% scn.forEach(function(scenario) { %>
+            <tr>
+                <td style="text-align:center"><a href="/admin/archived-scenarios" class="btn"><i class="bi bi-arrows-fullscreen"></i></a></td>
+                <td><%= scenario.title %></td> 
+                <td><%= scenario.description %></td> 
+                  <td><%= scenario.mission %></td>
+                  <td><%= scenario.level %></td>
+                  <td><%= scenario.type %></td>
+                  <td style="text-align:center"><%= scenario.time %></td>
+                  <td style="text-align:center"><%= scenario.passingGrade %></td>
+                  <td style="text-align:center"><a href="/admin/edit-scenarios/<%= scenario.id %>?edit=true" class="btn"><i class="bi bi-pencil"></i></a></td>
+                  <td style="text-align:center"><form action="/admin/move-scenario" method="POST">
+                    <input type="hidden" value="<%= scenario._id %>" name="scenarioId">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn-hidden" onclick="return moveClick()" type="submit"><i class="bi bi-archive-fill"></i></button></form></td>
+                  <td style="text-align:center"><form action="/admin/clone-scenario" method="POST">
+                    <input type="hidden" value="<%= scenario._id %>" name="scenarioId">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn-hidden" onclick="return cloneClick()" type="submit"><i class="bi bi-plus-circle"></i></button></form></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+    </div>
+
+    
+    <script>
+      function moveClick() {
+       return confirm("Are you sure you want to archive the scenario ?");
+     }
+     function cloneClick() {
+       return confirm("Do you wish to clone this scenario ?");
+     }
+     </script>
+ <% } else { %>
+     <h1>No Scenarios Found!</h1>
+ <% } %>
+        
+<%- include('../includes/end.ejs') %>

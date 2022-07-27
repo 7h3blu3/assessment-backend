@@ -1,0 +1,28 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navbar.ejs') %>
+
+        <br><br>
+
+        <div class="container col-md-3 text-center border border-top-0 shadow p-3 mb-5 bg-body rounded">
+            <form class="sm-6" action="/reset" method="POST">
+                  <div class="form-floating mb-3">
+                    <h1> Password Reset </h1>
+                  </div>
+                  <% if (errorMessage) { %>
+                    <div class="user-message user-message--error"><%= errorMessage %></div>
+                <% } %>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="btn btn-primary">Reset Password</button>
+                  </div>     
+            </form>
+        </div>	
+      
+      <div class="footer fixed-bottom text-dark text-center border border-top-1" >
+          2021
+      </div>
+<%- include('../includes/end.ejs') %>

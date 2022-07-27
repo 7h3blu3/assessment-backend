@@ -1,0 +1,64 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+
+<% if (scn.length > 0) { %>
+    
+    <div class="container col-md-8">
+         <h1  class="text-center">List Of Archived Scenarios</h1>
+        
+      <table class="table table-hover">
+        
+        <thead>
+            
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Mission</th>
+              <th scope="col">Level</th>
+              <th scope="col">Type</th>
+              <th scope="col">Time</th>
+              <th scope="col">Passing Grade</th>
+              <th scope="col">Restore</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% scn.forEach(function(scenarioBackup) { %>
+            <tr>
+                <td><%= scenarioBackup.title %></td>
+                <td><%= scenarioBackup.description %></td> 
+                  <td><%= scenarioBackup.mission %></td>
+                  <td><%= scenarioBackup.level %></td>
+                  <td><%= scenarioBackup.type %></td>
+                  <td style="text-align:center"><%= scenarioBackup.time %></td>
+                  <td style="text-align:center"><%= scenarioBackup.passingGrade %></td>
+                  <td><form action="/admin/restore-scenario" method="POST">
+                    <input type="hidden" value="<%= scenarioBackup._id %>" name="scenarioBackupId">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn-hidden" onclick="return clickRestore()" type="submit"><i class="bi bi-arrow-counterclockwise"></i></form></td>
+                  <td style="text-align:center"><form action="/admin/delete-scenario" method="POST">
+                    <input type="hidden" value="<%= scenarioBackup._id %>" name="scenarioBackupId">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn-hidden" onclick="return clickDelete()" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                  </svg></button></form></td>
+                 
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+    </div>
+
+    <script>
+      function clickDelete() {
+       return confirm("THIS ACTION WILL PERMAMENTLY DELETE THIS SCENARIO!");
+     }
+     function clickRestore() {
+       return confirm("Are you sure you want to restore this scenario?");
+     }
+     </script>
+ <% } else { %>
+     <h1>No Scenarios Found!</h1>
+ <% } %>
+        
+<%- include('../includes/end.ejs') %>

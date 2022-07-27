@@ -1,0 +1,32 @@
+<%- include('../includes/head.ejs') %>
+   <%- include('../includes/navbar.ejs') %>
+
+    <br><br>
+
+    <div class="container col-md-3 text-center border border-top-0 shadow p-3 mb-5 bg-body rounded">
+		<form class="sm-6" action="/login" method="POST">
+              <div class="form-floating mb-3">
+                <h1> Login </h1>
+              </div>
+              <% if (errorMessage) { %>
+                <div class="user-message user-message--error"><%= errorMessage %></div>
+            <% } %>
+			        <div class="form-floating mb-3">
+                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn btn-primary">Login</button>
+              </div>
+              <div class="form-floating mb-3">
+                <a href="/signup">Don't have an account?</a></button>
+                <a href="/reset">Reset Password</a>
+              </div>       
+		</form>
+	</div>	
+<%- include('../includes/end.ejs') %>

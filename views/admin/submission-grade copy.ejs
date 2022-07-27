@@ -1,0 +1,22 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+
+<div class="container col-md-8">
+    
+    <form action="/users/Assessment/<%= user.id %>" name="/submit-scenario" method="POST">
+        <div class="invisible"><input readonly name="user_submit_title" type="text" class="form-control" name="score" value="<%= user.submittedScenarios %>" placeholder="<%= user.submittedScenarios %>"></div>
+        <div class="mb-3"></label>
+        </div>
+        <div class="mb-3">
+
+            <textarea readonly class="form-control" id="exampleFormControlTextarea1" name="user_submit_scenario" rows="12"><%= user.submittedScenarios.toString().replace(/,/g,'\r\n' ) %></textarea>
+        </div>
+        <div class="mb-3">
+
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="user_submit_scenario_input" placeholder="Write your comments here" rows="6"><%= user.submittedScenarios.toString().split(/,/g,'\r\n') %></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<%- include('../includes/end.ejs') %>

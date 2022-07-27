@@ -1,0 +1,53 @@
+<%- include('../includes/head.ejs') %>
+    <%- include('../includes/navbar.ejs') %>
+  
+        <main>
+
+            <br><br>
+
+            <div class="container col-md-3 text-center border border-top-0 shadow p-3 mb-5 bg-body rounded">
+                <form class="sm-6" action="/signup" method="POST">
+                    <div class="form-floating mb-3">
+                        <h1> Signup </h1>
+                    </div>
+                    <% if (errorMessage) { %>
+                        <div class="user-message user-message--error"><%= errorMessage %></div>
+                    <% } %>
+                            <div class="form-floating mb-3">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                        <label for="email">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                        <label for="password">Password</label>
+                    </div> 
+                    <div class="form-floating mb-3">
+                        <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                        <label for="confirmPassword">Confirm Password</label>
+                    </div>
+                    <div style="text-align:left">
+                        <label for="">Please select your mission</label>
+                        <select class="form-select col-md" name="mission" placeholder="Mission">
+                            <% filteredMissions.forEach(function(mission) { %>
+                                <option><%= mission %></option>
+                                <% }); %>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-floating mb-3">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <a href="/login">Already have an account?</a>
+                        <a href="/reset">Reset Password</a>
+                    </div>       
+                </form>
+            </div>	
+        
+        <div class="footer fixed-bottom text-dark text-center border border-top-1" >
+            2021
+        </div>
+
+    </main>
+<%- include('../includes/end.ejs') %>

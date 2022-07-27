@@ -1,0 +1,35 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+
+<div class="container col-md-6">
+    <form class="form-floating sm-6" action="assign-scenarios" method="POST">
+        <h1  class="text-center">Assign Scenario to User</h1>
+        <div class="row">
+                <select name="user" class="form-select col-md" aria-label="Default select example">
+                    <option selected>User</option>
+                    <% user.forEach(function(user) { %>
+                        <option><%= user.email %></option>
+                        <% }); %>
+                </select>
+                <select class="form-select col-md" name='scenario' aria-label="Default select example">
+                    <option selected>Scenario</option>
+                    <% scenarioFindType3.forEach(function(scenarioFindType3) { %>
+                        <option  data-toggle="tooltip" data-placement="right" value="<%= scenarioFindType3._id %>, <%= scenarioFindType3.title %>, <%= scenarioFindType3.description%>" name="scenarioId" title="<%= scenarioFindType3._id%>"><%= scenarioFindType3.title %>, <%= scenarioFindType3.description%></option>
+                        <% }); %>
+                </select>
+        </div>
+        <br></br>
+        <input type="hidden" value="<%= scenarioFindType3._id %>" name="scenarioId">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <label for="exampleDataList" class="form-label">Datalist example</label>
+      <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+      <datalist id="datalistOptions">
+        <% user.forEach(function(user) { %>
+          <option><%= user.email %></option>
+          <% }); %>
+      </datalist>
+	</div>
+
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,197 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navbar.ejs') %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<div class="container col-md-6">
+    <h1  class="text-center"><% if (editing) { %>Edit Scenario<% } else { %>Create Scenario<% } %></h1>
+        <form action="/admin/<% if (editing) { %>edit-scenarios<% } else { %>create-scenarios<% } %>" method="POST" name="add_name" id="add_service">
+            <div class="row">
+                <div class="col-md">
+                    <input class="form-control" list="datalistOptions" id="exampleDataList" name="mission" required placeholder="Mission" value="<% if (editing) { %><%= scenario.mission %><% } %>">
+                    <datalist id="datalistOptions">
+                        <% filteredMissions.forEach(function(mission) { %>
+                            <option><%= mission %></option>
+                            <% }); %>
+                    </datalist>
+                </div>
+                <select name="level" class="form-select col-md" aria-label="Default select example">
+                    <option selected>Professional</option>
+                    <option>Experienced</option>
+                </select>
+                <select name="type" class="form-select col-md" aria-label="Default select example">
+                    <option selected>Type1</option>
+                    <option>Type2</option>
+                    <option>Type3</option>
+                </select>
+            </div>
+            <div class="row">
+                
+                <div class="col-md">
+                    <label for="">Passing Grade</label>
+                    <input type="number" class="form-control" name="grade" max="90" id="" placeholder="0-90" value="<% if (editing) { %><%= scenario.passingGrade %><% } %>" default="60" required>
+                </div>
+                <div class="col-md">
+                    <label for="">Time for Scenario</label>
+                    <input type="number" class="form-control" name="time" id="" min="60" placeholder="Time in Minutes. Example:60" value="<% if (editing) { %><%= scenario.time %><% } %>" default="60" required>
+                </div>
+            </div>
+            <div class="row">
+                <label for="title">Scenario Title</label>
+                <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="<% if (editing) { %><%= scenario.title %><% } %>" required>
+            </div>
+            <div class="row">
+                <label for="description"  class="form-label">Scenario Body</label>
+                <textarea class="form-control" name="description" id="description" rows="10" required><% if (editing) { %><%= scenario.description %><% } %></textarea>
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" value="<%= scenario._id %>" name="scenarioId">
+            <% } %>
+
+            <h1 class="text-center">Create Score Card</h1>
+
+            <!-- Yet to be fixed, this is to edit the scorecard -->
+            <% if (editing) { %>
+                <div class="container">
+                <!-- <input type="text" value="<%= scenario.scoreCard %>" name="scenarioId"> -->
+                <% for (let i = 0; i < scenario.scoreCard.length; i++) { %>
+                    <div class="row">
+                    <div class="col-md-10">
+                    <label>Question</label>
+                    <input type="text" class="form form-control" required="required" value="<%= scenario.scoreCard[i][0] %>" name="key">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="price">Weight(Points)</label>
+                        <input type="number" class="form-control" id="cost" required="required" value="<%= scenario.scoreCard[i][1] %>" name="key" oninput="calculate('row_0')">
+                    </div>
+                </div>
+                </br>
+                <% }%>
+            </div>
+            <% } %>
+
+            <input class="text-center btn btn-light border border-primary" type="button" value="Add" onClick="addRow('dataTable')"/>
+
+            Total Points<input type="number" min="100" max="100" class="form-control" id="grand_total" name="grand_total" onkeypress="return false;" placeholder="This should always equal 100" required>
+
+            <table id="dataTable" class="table" >
+                <tbody>
+                <tr id='row_0'>
+    
+                    <td class="col-md-10">
+                        <label>Question</label>
+                        <input type="text" class="form form-control" required="required" name="key">
+                    </td>
+                    <td hidden>
+                        
+                        <input hidden type="text" class="qty" value="1" required="required" name="qty" oninput="calculate('row_0')">
+                    </td>
+                    <td class="col-md-1">
+                        <label for="price">Weight(Points)</label>
+                        <input type="number" class="form-control" id="cost" required="required" name="key" oninput="calculate('row_0')">
+                    </td>
+                    <td hidden>
+                        
+                        <input hidden type="text" class="subtotal" required="required" name="subtotal[]">
+    
+                    </td>
+    
+                    <td>
+                        <label for="price" class="invisible">Weight(Points)</label>
+                        <input type="button" class="remove btn btn-primary" value="Remove" onclick="removeRow('dataTable', '0');">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            
+            </br>
+            
+            <button type="submit" class="btn btn-primary" id="submitButton"><% if (editing) { %>Edit Scenario<% } else { %>Create Scenario<% } %></button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            
+        </form>
+        
+    </div>
+    
+
+    
+    <!-- latest scipt -->
+    <script>
+       
+          function addRow(tableID) {
+              var table = document.getElementById(tableID);
+              var rowCount = table.rows.length;
+              if (rowCount < 10) {
+                  var row = table.insertRow(rowCount);
+      
+                  var colCount = table.rows[0].cells.length;
+                  row.id = 'row_' + rowCount;
+                  for (var i = 0; i < colCount; i++) {
+                      var newcell = row.insertCell(i);
+                      newcell.outerHTML = table.rows[0].cells[i].outerHTML;
+                  }
+                  var listitems = row.getElementsByTagName("input")
+                  for (i = 0; i < listitems.length - 1; i++) {
+                      listitems[i].setAttribute("oninput", "calculate('" +
+                          row.id + "')");
+                  }
+                  listitems[listitems.length - 1].setAttribute("onclick", "removeRow('dataTable', " + row.id.replace("row_", "") + ")");
+              } else {
+                  alert("Maximum 10.");
+      
+              }
+          }
+      
+          function removeRow(tableID, index) {
+              //Removing the row
+              var table = document.getElementById(tableID);
+              if(index === "0"){
+
+              }
+              else {
+
+              
+              table.deleteRow(index);
+              //Modifying the ids of subsequent rows
+              var rowCount = table.rows.length;
+              for (var i = index; i < rowCount; i++) {
+                  table.rows[i].id = "row_" + i;
+                  table.rows[i].getElementsByClassName("remove")[0].setAttribute("onclick", "removeRow('dataTable', " + i + ");");
+              }
+              //Handling the counts
+              grandtotal();
+            }
+          }
+      
+      
+          function calculate(elementID) {
+              var mainRow = document.getElementById(elementID);
+              var myBox1 = mainRow.querySelectorAll('[class=qty]')[0].value;
+              var myBox2 = mainRow.querySelectorAll('[id=cost]')[0].value;
+              var total = mainRow.querySelectorAll('[class=subtotal]')[0];
+              var myResult1 = myBox1 * myBox2;
+              total.value = myResult1;
+      
+              grandtotal();
+          }
+      
+          function grandtotal(){
+      
+              //calculation script
+              var $form = $('#add_service'),
+                  $sumDisplay = $('#grand_total');
+      
+              var $summands = $form.find('.subtotal');
+              var sum = 0;
+              $summands.each(function ()
+              {
+                  var value = Number($(this).val());
+                  if (!isNaN(value)) sum += value;
+              });
+      
+              $sumDisplay.val(sum);
+          }
+  
+    </script>
+    
+<%- include('../includes/end.ejs') %>
