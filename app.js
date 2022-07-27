@@ -11,7 +11,7 @@ const authRoutes = require("./routes/auth");
 
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb+srv://7h3blu3:73XBU9fI69AV8jTk@cluster0.dm69koz.mongodb.net/?retryWrites=true&w=majority'
+const MONGODB_URI = 'mongodb+srv://7h3blu3:73XBU9fI69AV8jTk@cluster0.dm69koz.mongodb.net/assessment?retryWrites=true&w=majority'
 
 const app = express()
 const store = new MongoDBStore({
