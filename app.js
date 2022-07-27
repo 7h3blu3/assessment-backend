@@ -76,7 +76,6 @@ app.use((req, res, next) => {
 app.use('/admin', adminRoutes);
 app.use("", userRoutes, authRoutes) 
 
-
 // When its not working try like this
 // app.get("/list-users", getListUsers = (async (req, res, next) => {
 //   try {
