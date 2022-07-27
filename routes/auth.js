@@ -1,27 +1,30 @@
 const express = require('express');
 
+const authController = require('../controllers/auth');
+
+const { alreadyLogged } = require('../middleware/is-role')
 
 const router = express.Router();
 
-router.get("/")
+router.get("/", alreadyLogged(), authController.getLogin)
 
-router.get('/login');
+router.get('/login', alreadyLogged(), authController.getLogin);
 
-router.get('/signup');
-// router.get('/signup'p);
+router.get('/signup', authController.getSignup);
+// router.get('/signup', alreadyLogged(), authController.getSignup);
 
-router.post('/login');
+router.post('/login', authController.postLogin);
 
-router.post('/signup');
+router.post('/signup', alreadyLogged(), authController.postSignup);
 
-router.post('/logout');
+router.post('/logout', authController.postLogout);
 
-router.get('/reset');
+router.get('/reset', alreadyLogged(), authController.getReset);
 
-router.post('/reset');
+router.post('/reset', alreadyLogged(), authController.postReset);
 
-router.get('/reset/:token');
+router.get('/reset/:token', alreadyLogged(), authController.getNewPassword);
 
-router.post('/new-password');
+router.post('/new-password', alreadyLogged(), authController.postNewPassword);
 
 module.exports = router;
