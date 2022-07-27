@@ -2,7 +2,6 @@
   "name": "assessment-mean",
   "version": "0.0.0",
   "scripts": {
-    "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "private": true,

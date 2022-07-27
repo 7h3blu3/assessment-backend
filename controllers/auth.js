@@ -6,14 +6,57 @@
 // const User = require('../models/user');
 // const Scenario = require("../models/scenario");
 
-// const transporter = nodemailer.createTransport({
-//   host: "smtp.mailtrap.io",
-//   port: 2525,
-//   auth: {
-//     user: "6e10fe391f6bd2",
-//     pass: "4745b00e704e6a"
-//   }
-// })
+const transporter = nodemailer.createTransport({
+  host: "smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "6e10fe391f6bd2",
+    pass: "4745b00e704e6a"
+  }
+})
+
+exports.getLogin = (req, res, next) => {
+  // let message = req.flash('error');
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+  res.render('auth/login', {
+    path: '/login',
+    pageTitle: 'Login',
+    errorMessage: message
+  });
+};
+
+// Have to sent the data from the GET 
+exports.getSignup = (async (req, res, next) => {
+  const scenario = await Scenario.find()
+    
+  try {
+      const allMissions = []
+      const store = []
+
+      scenario.forEach(element => allMissions.push(element.mission))
+      const filteredMissions = allMissions.filter((item, i, ar) => ar.indexOf(item) === i)
+    
+      filteredMissions.forEach(element => {
+        var missions = {
+          name:element 
+        }
+        store.push(missions)
+      })
+      console.log("This the missions outside foreach", store)
+
+
+
+      res.status(200).json(store)
+
+    } catch(e){
+      console.log(e)
+      res.status(500).send(e)
+    } 
+})
 
 // exports.getLogin = (req, res, next) => {
 //   let message = req.flash('error');
