@@ -11,36 +11,36 @@ const authRoutes = require("./routes/auth");
 
 const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb://127.0.0.1:27017/Assessment'
+// const MONGODB_URI = 'mongodb://127.0.0.1:27017/Assessment'
 
 const app = express()
-const store = new MongoDBStore({
-  uri: MONGODB_URI,
-  collection: 'sessions'
-})
+// const store = new MongoDBStore({
+//   uri: MONGODB_URI,
+//   collection: 'sessions'
+// })
 
-mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(result => {
-    console.log("Connected to database!");
-  })
-  .catch(err => {
-    console.log(err + " Connection to database failed!");
-  });
+// mongoose
+//   .connect(MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   })
+//   .then(result => {
+//     console.log("Connected to database!");
+//   })
+//   .catch(err => {
+//     console.log(err + " Connection to database failed!");
+//   });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(
-  session({
-    secret: 'my secret',
-    resave: false,
-    saveUninitialized: false,
-    store: store
-  })
-);
+// app.use(
+//   session({
+//     secret: 'my secret',
+//     resave: false,
+//     saveUninitialized: false,
+//     store: store
+//   })
+// );
 
 app.use((req, res, next) => {
   if (!req.session.user) {
