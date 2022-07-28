@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -6,33 +6,36 @@ const userSchema = new Schema({
   email: {
     type: String,
     lowercase: true,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   userType: {
     type: String,
-    default: "User"
+    default: "User",
   },
   mission: {
     type: String,
-    uppercase: true
+    uppercase: true,
   },
   level: {
     type: String,
-    default: "Professional"
+    default: "Professional",
   },
   assignedScenarios: {
-    type: [{
-      _id : false,
-      scenarioId:String
-    }]
+    type: [
+      {
+        _id: false,
+        scenarioId: String,
+      },
+    ],
   },
-  submittedScenarios:{
-      type: [{
-        _id : false,
+  submittedScenarios: {
+    type: [
+      {
+        _id: false,
         scenarioId: String,
         userId: String,
         scenarioDateTaken: String,
@@ -40,48 +43,56 @@ const userSchema = new Schema({
         scenarioDescription: String,
         userResponse: String,
         level: String,
-        mission: String
-      }]
+        mission: String,
+      },
+    ],
   },
-  finalGrade:{
-    type: [{
-      _id : false,
-      scenarioId: String,
-      scenarioDescription: String,
-      userResponse: String,
-      scenarioTitle: String,
-      scenarioMission: String,
-      scenarioLevel: String,
-      passingGrade: Number,
-      status: String,
-      currentGrade: Number,
-      feedback: String
-      }]
-  },  
+  finalGrade: {
+    type: [
+      {
+        _id: false,
+        scenarioId: String,
+        scenarioDescription: String,
+        userResponse: String,
+        scenarioTitle: String,
+        scenarioMission: String,
+        scenarioLevel: String,
+        passingGrade: Number,
+        status: String,
+        currentGrade: Number,
+        feedback: String,
+      },
+    ],
+  },
   alreadyAssigned: {
-    type: [{
-      _id : false,
-      scenarioId: String}]
+    type: [
+      {
+        _id: false,
+        scenarioId: String,
+      },
+    ],
   },
   assignedType3: {
-    type: [{
-      _id : false,
-      scenarioType3Id:String
-    }]
+    type: [
+      {
+        _id: false,
+        scenarioType3Id: String,
+      },
+    ],
   },
   testCounter: {
     type: Number,
-    default: 1
+    default: 1,
   },
   time: {
-    type: [Array]
+    type: [Array],
   },
   resetToken: String,
   resetTokenExpiration: Date,
   scenarioId: {
     type: Schema.Types.ObjectId,
-          ref: 'Scenario'
-  }
-})
+    ref: "Scenario",
+  },
+});
 
-module.exports = mongoose.model('User', userSchema);  
+module.exports = mongoose.model("User", userSchema);

@@ -131,22 +131,22 @@ exports.postEditUsers = (async (req, res, next) => {
 exports.postArchivedUsers = (async (req, res, next) => {
   const userId = req.params.id
   console.log("The user id is " + userId)
-  console.log("The user id isss ", userId)
   try {
     const user = await User.findById(userId)
 
     const usersBackup = new userBackup({
-      userType: user.userType,
-      level: user.level,
-      mission: user.mission,
-      assignedScenarios: user.assignedScenarios,
       email: user.email,
       password: user.password,
-      testCounter: user.testCounter,
+      userType: user.userType,
+      mission: user.mission,
+      level: user.level,
+      assignedScenarios: user.assignedScenarios,
       submittedScenarios: user.submittedScenarios,
       finalGrade: user.finalGrade,
-      time: user.time,
       alreadyAssigned: user.alreadyAssigned,
+      assignedType3: user.assignedType3,
+      testCounter: user.testCounter,
+      time: user.time,
       _id: user._id,
       userId: req.user,
     })
@@ -165,17 +165,19 @@ exports.postRestoreUsers = (async (req, res, next) => {
   try {
     const userBckp = await userBackup.findById(userBackupId)
     const user = new User({
-      userType: userBckp.userType,
-      level: userBckp.level,
-      mission: userBckp.mission,
-      assignedScenarios: userBckp.assignedScenarios,
+
       email: userBckp.email,
       password: userBckp.password,
-      testCounter: userBckp.testCounter,
+      userType: userBckp.userType,
+      mission: userBckp.mission,
+      level: userBckp.level,
+      assignedScenarios: userBckp.assignedScenarios,
       submittedScenarios: userBckp.submittedScenarios,
       finalGrade: userBckp.finalGrade,
-      time: userBckp.time,
       alreadyAssigned: userBckp.alreadyAssigned,
+      assignedType3: userBckp.assignedType3,
+      testCounter: userBckp.testCounter,
+      time: userBckp.time,
       _id: userBckp._id,
       userId: req.user,
     })
