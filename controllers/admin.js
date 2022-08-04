@@ -154,6 +154,8 @@ exports.postArchivedUsers = (async (req, res, next) => {
     await usersBackup.save()
     await User.findByIdAndDelete(userId)
     console.log('User archived!')
+
+    res.status(200).json()
   } catch(e){
     console.log(e)
     res.status(500).send(e)
