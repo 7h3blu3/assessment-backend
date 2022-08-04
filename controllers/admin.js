@@ -187,6 +187,7 @@ exports.postRestoreUsers = (async (req, res, next) => {
     await user.save()
     await userBackup.findByIdAndDelete(userBackupId)
     console.log('User Restored!')
+    res.status(200).json()
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -429,36 +430,38 @@ exports.postArchiveScenario = (async (req, res, next) => {
     console.log(result)
     console.log('Scenario archived!')
   } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
+    res.status(500).json({
+      message: "Archiving a scenario failed!"
+  })
+  console.log("Archive scenario error " + e)
   }
 })
 
 exports.postCloneScenario = (async (req, res, next) => {
-  const scenarioId = req.body.scenarioId
-
+  const scenarioId = req.params.scenarioId
+  console.log("scenarioId ", scenarioId)
   try{
     const scenario = await Scenario.findById(scenarioId)
 
     const scenarioClone = new Scenario({
-      title: scenario.title,
-      description: scenario.description,
       mission: scenario.mission,
       level: scenario.level,
       type: scenario.type,
+      title: scenario.title,
+      description: scenario.description,
       passingGrade: scenario.passingGrade,
       time: scenario.time,
+      logsUrl: scenario.logsUrl,
       scoreCard: scenario.scoreCard,
-      // userId: req.user,
     })
     
+  console.log("scenarioClone ", scenarioClone)
+
     const result = await scenarioClone.save()
-    console.log(result)
-    console.log('Scenario Cloned!')
-    res.redirect('/admin/list-scenarios')
+    res.status(200).json()
   } catch (e) {
     console.log(e)
-    res.status(400).send(e)
+    res.status(400).json(e)
   }
 })
 

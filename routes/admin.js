@@ -46,7 +46,7 @@ router.post("/edit-scenarios",  adminController.postEditScenario)
 
 router.post("/archive-scenario/:id",  adminController.postArchiveScenario)
 
-router.post("/clone-scenario",  adminController.postCloneScenario)
+router.post("/clone-scenario/:scenarioId",  adminController.postCloneScenario)
 
 router.post("/delete-scenario",  adminController.postDeleteScenario)
 
