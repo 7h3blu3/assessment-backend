@@ -10,15 +10,16 @@ const router = express.Router();
 
 router.get("/panel", adminController.getPanel)
 
-router.get("/list-users", adminController.getListUsers)
+router.get("/list-users", isAuth ,adminController.getListUsers)
+// router.get("/list-users", adminController.getListUsers)
 
-router.get("/archived-users", adminController.getListArchivedUsers)
+router.get("/archived-users", isAuth, adminController.getListArchivedUsers)
 
-router.get("/edit-users/:userId", adminController.getEditUsers)
+router.get("/edit-users/:userId", isAuth, adminController.getEditUsers)
 
 router.get("/levelMissionType", adminController.getLevelMissionType)
  
-router.get("/list-scenarios", adminController.getListScenarios)
+router.get("/list-scenarios", isAuth, adminController.getListScenarios)
 
 router.get("/archived-scenarios", adminController.getListArchivedScenarios)
 
@@ -30,30 +31,30 @@ router.get("/submission-grade/:userId/:scenarioId", adminController.getSubmissio
 
 // router.post("/panel", isAuth, adminRole(), adminController.postPanel)
 
-router.post("/edit-users", adminController.postEditUsers)
+router.post("/edit-users", isAuth, adminController.postEditUsers)
 
-router.post("/levelMissionType", adminController.postLevelMissionType)
+router.post("/levelMissionType", isAuth, adminController.postLevelMissionType)
 
-router.post("/archived-users/:id", adminController.postArchivedUsers)
+router.post("/archived-users/:id", isAuth, adminController.postArchivedUsers)
 
-router.post("/restore-users/:id",  adminController.postRestoreUsers)
+router.post("/restore-users/:id",  isAuth, adminController.postRestoreUsers)
 
-router.post("/delete-user", adminController.postDeleteUser)
+router.post("/delete-user", isAuth, adminController.postDeleteUser)
 
-router.post("/create-scenarios", adminController.postcreateScenario)
+router.post("/create-scenarios", isAuth, adminController.postcreateScenario)
 
 router.post("/edit-scenarios",  adminController.postEditScenario)
 
-router.post("/archive-scenario/:id",  adminController.postArchiveScenario)
+router.post("/archive-scenario/:id", isAuth,  adminController.postArchiveScenario)
 
-router.post("/clone-scenario/:scenarioId",  adminController.postCloneScenario)
+router.post("/clone-scenario/:scenarioId", isAuth,  adminController.postCloneScenario)
 
 router.post("/delete-scenario",  adminController.postDeleteScenario)
 
-router.post("/restore-scenario/:id",  adminController.postRestoreScenario)
+router.post("/restore-scenario/:id",  isAuth, adminController.postRestoreScenario)
 
-router.post("/assign-scenarios", adminController.postAssignScenario)
+router.post("/assign-scenarios", isAuth, adminController.postAssignScenario)
 
-router.post("/submission-grade/:userId/:scenarioId", adminController.postSubmissionGrade)
+router.post("/submission-grade/:userId/:scenarioId", isAuth, adminController.postSubmissionGrade)
 
 module.exports = router;

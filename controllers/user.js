@@ -5,9 +5,9 @@ const User = require("../models/user")
 //User Page
 exports.getStartAssessment = (async (req, res, next) => {
   try {
-    // Will need to use this user when we get session and delete below one
-    // const user = await User.findById(req.session.user._id)
-    const user  = await User.findById("626be77695ed44839b8079c9")
+    const userId = req.userData.userId
+
+    const user  = await User.findById(userId)
     console.log("User id ", user._id.toString())
     if(!user) {
       return res.status(404).send()
@@ -23,9 +23,9 @@ exports.getStartAssessment = (async (req, res, next) => {
 exports.getAssessment = (async (req, res, next) => {
   
   try {
-    //This will be hardcoded before we use the session
-    // const user = await User.findById(req.session.user._id)
-    const user = await User.findById("626be77695ed44839b8079c9")
+    const userId = req.userData.userId
+
+    const user = await User.findById(userId)
     // console.log("Show me the user ", user)
     // console.log(user.assignedType3[0])
 
@@ -104,7 +104,7 @@ exports.getAssessment = (async (req, res, next) => {
     // console.log("This is the scenario by id: ", scenario)
     /* current timestamp in milliseconds
      The thingie with the time works perfectly
-     Will need to check how to use it with angular tho */
+     Will need to check how to use it with angular tho - Its done in Angular as well, all good, will keep comment just in case tho */
     const currentDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') //This formats current date like so: 2021-04-28 15:54:08
     const finishDate = new Date(Date.now() + ( 3600 * 1000 * (scenario.time / 60))).toISOString().replace(/T/, ' ').replace(/\..+/, '')
     console.log(currentDate)
@@ -129,10 +129,10 @@ exports.getAssessment = (async (req, res, next) => {
 })
 
 exports.postAssessment = (async (req, res, next) => {
-  
-  //This will be hardcoded before we use the session
-  const findUser = await User.findById("626be77695ed44839b8079c9")
-  // const findUser = await User.findById(req.session.user._id)
+  const userId = req.userData.userId
+
+  const findUser  = await User.findById(userId)
+
   
   console.log("This is the id ", findUser)
   const userSubmit = req.body
