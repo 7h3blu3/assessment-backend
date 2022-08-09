@@ -84,7 +84,7 @@ exports.postLogin = (req, res, next) => {
         const token = jwt.sign(
           {
             email: fetchedUser.email,
-            userId: fetchedUser._id,
+            userId: fetchedUser._id
           },
           process.env.JWT_KEY,
           { expiresIn: "1h" }
@@ -92,7 +92,8 @@ exports.postLogin = (req, res, next) => {
         res.status(200).json({
           token: token,
           expiresIn: 3600,
-          userId: fetchedUser._id
+          userId: fetchedUser._id,
+          userType: fetchedUser.userType
         });
       })
       .catch((err) => {
