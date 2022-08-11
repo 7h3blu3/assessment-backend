@@ -179,7 +179,7 @@ exports.postAssessment = (async (req, res, next) => {
           user.assignedScenarios = []
 
           await user.save()
-
+          res.status(200).json(user)
           if(!user) {
           return res.status(400).send("Greetings")
           // .then((assignedUser)=>{

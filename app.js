@@ -7,6 +7,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
+const historyLogRoutes = require("./routes/historyLog");
 const authRoutes = require("./routes/auth");
 
 const User = require('./models/user');
@@ -71,7 +72,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes, historyLogRoutes);
 app.use("", userRoutes, authRoutes) 
 
 // When its not working try like this

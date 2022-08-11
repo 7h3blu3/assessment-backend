@@ -155,7 +155,7 @@ exports.postArchivedUsers = (async (req, res, next) => {
     await User.findByIdAndDelete(userId)
     console.log('User archived!')
 
-    res.status(200).json()
+    res.status(200).json(usersBackup)
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -187,7 +187,7 @@ exports.postRestoreUsers = (async (req, res, next) => {
     await user.save()
     await userBackup.findByIdAndDelete(userBackupId)
     console.log('User Restored!')
-    res.status(200).json()
+    res.status(200).json(user)
   } catch(e){
     console.log(e)
     res.status(500).send(e)
@@ -240,6 +240,18 @@ exports.getListScenarios = (async (req, res, next) => {
   }  
 })
 
+exports.getScenario = (async (req, res, next) => {
+  const scenarioId = req.params.scenarioId
+  try{
+    const scenario = await Scenario.findById(scenarioId)
+    console.log(scenario)
+    res.status(200).json(scenario)
+  } catch(e){
+    console.log("There is an error with finding this scenario " + e)
+    res.status(500).send(e)
+  }  
+})
+
 exports.getListArchivedScenarios = (async (req, res, next) => {
   try{
     const scenariosBackup = await scenarioBackup.find()
@@ -259,7 +271,7 @@ exports.getAssignScenarios = (async (req, res, next) => {
   try{
       const user = await User.find({})   
       const scenarioFindType3 = await Scenario.find({type: "Type3"})
-      console.log("Log this ", scenarioFindType3)
+      // console.log("Log this ", scenarioFindType3)
       res.status(200).json({
         user: user,
         type3: scenarioFindType3
@@ -325,11 +337,7 @@ exports.postAssignScenario = (async (req, res, next) => {
     const user = await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: {scenarioType3Id}}}, {new: true, runValidators: true, useFindAndModify:false})
     .then((assignedUser)=>{
       console.log(assignedUser)
-      res.status(201).json({
-        user:{
-          ...assignedUser
-        }
-      })
+      res.status(201).json(assignedUser)
     }).catch(error => {
       res.status(500).json({
           message: "Assigning a scenario failed!"
@@ -415,12 +423,8 @@ exports.postArchiveScenario = (async (req, res, next) => {
     })
     
     const result = await scenariosBackup.save()
-    Scenario.findByIdAndDelete(scenarioId).then((deletedScenario)=>{
-      res.status(201).json({
-        scenario: {
-          ...deletedScenario
-        }
-    })
+    Scenario.findByIdAndDelete(scenarioId).then((archivedScenario)=>{
+      res.status(201).json(archivedScenario)
   }).catch(error => {
     res.status(500).json({
         message: "Archiving a scenario failed!"
@@ -458,7 +462,7 @@ exports.postCloneScenario = (async (req, res, next) => {
   console.log("scenarioClone ", scenarioClone)
 
     const result = await scenarioClone.save()
-    res.status(200).json()
+    res.status(200).json(result)
   } catch (e) {
     console.log(e)
     res.status(400).json(e)
@@ -493,11 +497,7 @@ exports.postcreateScenario = (async (req, res, next) => {
       // userId: req.user,
     })
     scenario.save().then((createdScenario)=>{
-      res.status(201).json({
-        scenario: {
-          ...createdScenario
-        }
-      })
+      res.status(201).json(createdScenario)
     }).catch(error => {
       res.status(500).json({
           message: "Creating a scenario failed!"
@@ -507,7 +507,7 @@ exports.postcreateScenario = (async (req, res, next) => {
     console.log("This is the angular saved scenario ", scenario)
   } catch (e) {
     console.log(e)
-    res.status(400).send(e)
+    res.status(400).json(e)
   }
 })
 
@@ -598,12 +598,8 @@ exports.postEditScenario = (async (req, res, next) => {
     scenario.logsUrl = updatedLogsUrl
     scenario.scoreCard = updatedScoreCard
     scenario.grandTotal = updatedGrandTotal
-    scenario.save().then((createdScenario)=>{
-      res.status(201).json({
-        scenario: {
-          ...createdScenario
-        }
-      })
+    scenario.save().then((updatedScenario)=>{
+      res.status(201).json(updatedScenario)
     }).catch(error => {
       res.status(500).json({
           message: "Updating scenario failed!"
@@ -622,7 +618,7 @@ exports.getUserSubmission = (async (req, res, next) => {
     const user = await User.find({})
     // const reviewerId = await req.session.user._id
     // const reviewer = await User.findById(reviewerId)
-    const currentUserId = await req.session.user._id
+    const currentUserId = req.userData.userId
     const currentUser = await User.findById(currentUserId)
     
     res.status(200).json({
@@ -659,13 +655,9 @@ exports.getSubmissionGrade = (async (req, res, next) => {
 })
 
 exports.postSubmissionGrade = (async (req, res, next) => {
-// const userId = req.body.userId
 const userId = req.params.userId
 const scenId = req.params.scenarioId
-// const scenId = req.body.scenario_id
 
-console.log("This is the scenario id ", scenId)
-console.log("This is the user id ", userId)
 const scenarioDescription = req.body.scenarioDescription
 const userResponse = req.body.userResponse
 const scenarioTitle = req.body.scenarioTitle
@@ -701,11 +693,7 @@ try {
   })
 
   user.save().then((gradedUser)=>{
-    res.status(201).json({
-      user: {
-        ...gradedUser
-      }
-    })
+    res.status(201).json(gradedUser)
   }).catch(error => {
     res.status(500).json({
         message: "Grading a user failed!"

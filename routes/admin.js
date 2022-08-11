@@ -18,6 +18,8 @@ router.get("/archived-users", isAuth, adminController.getListArchivedUsers)
 router.get("/edit-users/:userId", isAuth, adminController.getEditUsers)
 
 router.get("/levelMissionType", adminController.getLevelMissionType)
+
+router.get("/scenario/:scenarioId", isAuth, adminController.getScenario)
  
 router.get("/list-scenarios", isAuth, adminController.getListScenarios)
 
