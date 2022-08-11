@@ -162,43 +162,48 @@ exports.postArchivedUsers = (async (req, res, next) => {
   }  
 })
 
-exports.deleteUser = (req, res, next) => {
+exports.deleteUser =(async (req, res, next) => {
   const userId = req.params.userId;
-  console.log(userId);
-  userBackup.deleteOne({ _id: userId }).then((result) => {
-      if (result.deletedCount > 0){
-          res.status(200).json({ message: "User deleted!" })
-          console.log("User deleted!");
-      } else {
-          res.status(401).json({ message: "Not authorized to delete!" })
-          console.log("Not authorized to delete!");
-      }
-  }).catch(error => {
-      res.status(500).json({
-          message: "Deleting a user has failed!"
+  try {
+    const user = await userBackup.findById(userId)
+    userBackup.deleteOne({ _id: userId }).then((result) => {
+        if (result.deletedCount > 0){
+            res.status(200).json(user)
+            console.log("User deleted!");
+        } else {
+            res.status(401).json({ message: "Not authorized to delete!" })
+            console.log("Not authorized to delete!");
+        }
       })
-      console.log("delete error " + error)
-  });
-}
+    } catch(e) {
+    res.status(500).json({
+      message: "Deleting a user has failed!"
+     })
+  console.log("delete error " + error)
+  }
+ 
+})
 
-exports.deleteScenario = (req, res, next) => {
+exports.deleteScenario = (async (req, res, next) => {
   const scenarioId = req.params.scenarioId;
-  console.log(scenarioId);
-  scenarioBackup.deleteOne({ _id: scenarioId }).then((result) => {
+  try {
+    const scenario = await scenarioBackup.findById(scenarioId)
+    scenarioBackup.deleteOne({ _id: scenarioId }).then((result) => {
       if (result.deletedCount > 0){
-          res.status(200).json({ message: "Scenario deleted!" })
+          res.status(200).json(scenario)
           console.log("Scenario deleted!");
       } else {
           res.status(401).json({ message: "Not authorized to delete!" })
           console.log("Not authorized to delete!");
       }
-  }).catch(error => {
-      res.status(500).json({
-          message: "Deleting a scenario has failed!"
-      })
-      console.log("delete error " + error)
-  });
-}
+    })
+  } catch (e) {
+    res.status(500).json({
+      message: "Deleting a scenario has failed!"
+  })
+  console.log("delete error " + error)
+  }
+})
 
 exports.postRestoreUsers = (async (req, res, next) => {
   const userBackupId = req.params.id
@@ -421,11 +426,7 @@ exports.postRestoreScenario = (async (req, res, next) => {
       // userId: req.user,
     })
     await scenario.save().then((restoredScenario)=>{
-      res.status(201).json({
-        scenario:{
-          ...restoredScenario
-        }
-      })
+      res.status(201).json(restoredScenario)
     }).catch(error => {
       res.status(500).json({
           message: "Restoring a scenario failed!"
