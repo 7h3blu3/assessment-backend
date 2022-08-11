@@ -162,6 +162,25 @@ exports.postArchivedUsers = (async (req, res, next) => {
   }  
 })
 
+exports.deleteUser = (req, res, next) => {
+  const userId = req.params.userId;
+  console.log(userId);
+  User.deleteOne({ _id: userId }).then((result) => {
+      if (result.deletedCount > 0){
+          res.status(200).json({ message: "User deleted!" })
+          console.log("User deleted!");
+      } else {
+          res.status(401).json({ message: "Not authorized to delete!" })
+          console.log("Not authorized to delete!");
+      }
+  }).catch(error => {
+      res.status(500).json({
+          message: "Deleting a user has failed!"
+      })
+      console.log("delete error " + error)
+  });
+}
+
 exports.postRestoreUsers = (async (req, res, next) => {
   const userBackupId = req.params.id
   try {

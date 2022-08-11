@@ -59,4 +59,6 @@ router.post("/assign-scenarios", isAuth, adminController.postAssignScenario)
 
 router.post("/submission-grade/:userId/:scenarioId", isAuth, adminController.postSubmissionGrade)
 
+router.delete("/delete/:userId", isAuth, adminController.deleteUser)
+
 module.exports = router;
