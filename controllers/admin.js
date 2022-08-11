@@ -423,6 +423,7 @@ exports.postRestoreScenario = (async (req, res, next) => {
       time: scenarioBckp.time,
       logsUrl: scenarioBckp.logsUrl,
       scoreCard: scenarioBckp.scoreCard,
+      grandTotal: scenario.grandTotal
       // userId: req.user,
     })
     await scenario.save().then((restoredScenario)=>{
@@ -458,6 +459,7 @@ exports.postArchiveScenario = (async (req, res, next) => {
       time: scenario.time,
       logsUrl: scenario.logsUrl,
       scoreCard: scenario.scoreCard,
+      grandTotal: scenario.grandTotal
       // userId: req.user,
     })
     
@@ -496,6 +498,7 @@ exports.postCloneScenario = (async (req, res, next) => {
       time: scenario.time,
       logsUrl: scenario.logsUrl,
       scoreCard: scenario.scoreCard,
+      grandTotal: scenario.grandTotal
     })
     
   console.log("scenarioClone ", scenarioClone)
