@@ -165,7 +165,7 @@ exports.postArchivedUsers = (async (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
   const userId = req.params.userId;
   console.log(userId);
-  User.deleteOne({ _id: userId }).then((result) => {
+  userBackup.deleteOne({ _id: userId }).then((result) => {
       if (result.deletedCount > 0){
           res.status(200).json({ message: "User deleted!" })
           console.log("User deleted!");
@@ -176,6 +176,25 @@ exports.deleteUser = (req, res, next) => {
   }).catch(error => {
       res.status(500).json({
           message: "Deleting a user has failed!"
+      })
+      console.log("delete error " + error)
+  });
+}
+
+exports.deleteScenario = (req, res, next) => {
+  const scenarioId = req.params.scenarioId;
+  console.log(scenarioId);
+  scenarioBackup.deleteOne({ _id: scenarioId }).then((result) => {
+      if (result.deletedCount > 0){
+          res.status(200).json({ message: "Scenario deleted!" })
+          console.log("Scenario deleted!");
+      } else {
+          res.status(401).json({ message: "Not authorized to delete!" })
+          console.log("Not authorized to delete!");
+      }
+  }).catch(error => {
+      res.status(500).json({
+          message: "Deleting a scenario has failed!"
       })
       console.log("delete error " + error)
   });
