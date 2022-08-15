@@ -393,20 +393,6 @@ exports.postAssignScenario = (async (req, res, next) => {
     //   return;
     // }
 
-
-    for (let i = 0; i < findUser.assignedType3.length; i++) {
-      let current = findUser.assignedType3[i];
-      if (current.scenarioType3Id === scenarioType3Id){
-        const done = true;
-      } else {
-        
-      }
-      if (done) {
-
-      }
-    }
-
-
     await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: {scenarioType3Id}}}, {new: true, runValidators: true, useFindAndModify:false})
     .then((assignedUser)=>{
       console.log(assignedUser)
