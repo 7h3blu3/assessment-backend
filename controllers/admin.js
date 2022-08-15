@@ -372,7 +372,37 @@ exports.postAssignScenario = (async (req, res, next) => {
 
   try {
     const findUser = await User.findOne({email: email})
-    const user = await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: {scenarioType3Id}}}, {new: true, runValidators: true, useFindAndModify:false})
+
+    for (let i = 0; i < findUser.assignedType3.length; i++) {
+      let current = findUser.assignedType3[i];
+      if (current.scenarioType3Id === scenarioType3Id){
+        res.status(400).send(`Scenario ${scenarioType3Id} already assigned to this user`);
+        return;
+      }
+    }
+
+    // delcarative solution:
+    // const existingScenario = findUser.assignedType3.find(scenarioData => scenarioData.scenarioType3Id === scenarioType3Id);
+    // if (existingScenario) {
+    //   res.status(400).send(`Scenario ${scenarioType3Id} already assigned to this user`);
+    //   return;
+    // }
+
+
+    for (let i = 0; i < findUser.assignedType3.length; i++) {
+      let current = findUser.assignedType3[i];
+      if (current.scenarioType3Id === scenarioType3Id){
+        const done = true;
+      } else {
+        
+      }
+      if (done) {
+
+      }
+    }
+
+
+    await User.findByIdAndUpdate(findUser.id, {$push: {assignedType3: {scenarioType3Id}}}, {new: true, runValidators: true, useFindAndModify:false})
     .then((assignedUser)=>{
       console.log(assignedUser)
       res.status(201).json(assignedUser)
