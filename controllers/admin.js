@@ -423,7 +423,7 @@ exports.postRestoreScenario = (async (req, res, next) => {
       time: scenarioBckp.time,
       logsUrl: scenarioBckp.logsUrl,
       scoreCard: scenarioBckp.scoreCard,
-      grandTotal: scenario.grandTotal
+      grandTotal: scenarioBckp.grandTotal
       // userId: req.user,
     })
     await scenario.save().then((restoredScenario)=>{
