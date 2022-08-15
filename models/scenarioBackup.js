@@ -49,6 +49,9 @@ const scenarioSchema = new Schema({
       question5: String,
       weight5: Number,
   },
+  grandTotal: {
+    type: Number
+  }
    // userId: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'User',
